@@ -20,6 +20,10 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0' // do uzycia Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // do konwersji JSON
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation 'org.projectlombok:lombok:1.18.20' // Lombok w Gradle
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

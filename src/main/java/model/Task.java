@@ -11,7 +11,13 @@ public class Task {
     private String name;
     private boolean completed;
 
-    public Task(String description, boolean completed) {
+    // domyslny konstruktor bez arg
+    public Task() {
+    }
+
+    // z arg
+    public Task(String name, String description, boolean completed) {
+        this.name = name;
         this.description = description;
         this.completed = completed;
     }
