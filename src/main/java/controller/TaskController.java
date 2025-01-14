@@ -2,6 +2,7 @@ package controller;
 
 import model.ArchivedTask;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -48,7 +49,7 @@ public class TaskController {
             task.setPriority("low");
         }
         if (task.getStatus() == null || task.getStatus().isEmpty()) {
-            task.setStatus("inprogress");
+            task.setStatus("pending");
         }
         if (task.getTags() == null) {
             task.setTags(List.of());
@@ -128,5 +129,24 @@ public class TaskController {
         taskRepository.deleteById(id);
 
         return ResponseEntity.ok("Task archived and deleted successfully.");
+    }
+
+    // Zadanie zaplanowane na 2 w nocy
+    @Scheduled(cron = "0 0 2 * * ?") // Codziennie o 2:00 w nocy
+    public void archiveCompletedTasks() {
+        List<Task> completedTasks = taskRepository.findByStatus("completed");
+
+        for (Task task : completedTasks) {
+            ArchivedTask archivedTask = new ArchivedTask(
+                    task.getTitle(),
+                    task.getPriority(),
+                    task.getStatus(),
+                    task.getTags(),
+                    new Date() // Aktualny czas jako czas archiwizacji
+            );
+
+            archivedTaskRepository.save(archivedTask);
+            taskRepository.deleteById(task.getId());
+        }
     }
 }
