@@ -50,4 +50,14 @@ public class ReminderController {
     public void deleteReminder(@PathVariable String id) {
         reminderRepository.deleteById(id);
     }
+
+    // usuwanie powiadomien zakonczonych
+    @DeleteMapping("/cleanup")
+    public ResponseEntity<String> cleanupCompletedReminders() {
+        long completedCount = reminderRepository.deleteByIsCompletedTrue();
+        if (completedCount > 0) {
+            return ResponseEntity.ok("Deleted " + completedCount + " completed reminders.");
+        }
+        return ResponseEntity.ok("No completed reminders to delete.");
+    }
 }

@@ -1,11 +1,12 @@
 package model;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.List;
+import java.util.Date;
 
-@Document(collection = "tasks")
-public class Task {
+@Document(collection = "Archivedtasks")
+public class ArchivedTask {
 
     @Id
     private String id;
@@ -13,19 +14,20 @@ public class Task {
     private String priority;
     private String status;
     private List<String> tags;
+    private Date deleteTime;
 
-    // domyslny konstruktor bez arg
-    public Task() {
-    }
+    // konstruktor bez arg
+    public ArchivedTask() {}
 
-    // z arg
-    public Task(String title, String priority, String status, List<String> tags) {
+    public ArchivedTask(String title, String priority, String status, List<String> tags, Date deleteTime) {
         this.title = title;
         this.priority = priority;
         this.status = status;
         this.tags = tags;
+        this.deleteTime = deleteTime;
     }
 
+    // Gettery i Settery
     public String getId() {
         return id;
     }
@@ -64,5 +66,13 @@ public class Task {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public Date getDeleteTime() {
+        return deleteTime;
+    }
+
+    public void setDeleteTime(Date deleteTime) {
+        this.deleteTime = deleteTime;
     }
 }
