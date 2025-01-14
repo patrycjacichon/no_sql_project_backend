@@ -1,13 +1,15 @@
 package controller;
 
+import model.ArchivedTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.Date;
 import model.Task;
+import repository.ArchivedTaskRepository;
 import repository.TaskRepository;
 
 @RestController
@@ -16,6 +18,9 @@ public class TaskController {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private ArchivedTaskRepository archivedTaskRepository;
 
     @GetMapping
     public List<Task> getAllTasks() {
@@ -98,5 +103,30 @@ public class TaskController {
     @GetMapping("/tags/{tag}")
     public List<Task> getTasksByTag(@PathVariable String tag) {
         return taskRepository.findByTagsContaining(tag);
+    }
+
+    // archiwizacja usuniętych taskow
+    @PostMapping("/{id}/archive")
+    public ResponseEntity<String> archiveTask(@PathVariable String id) {
+        // pobranie zadania
+        Task task = taskRepository.findById(id).orElse(null);
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // tworzenie nowego task do archiwum
+        ArchivedTask archivedTask = new ArchivedTask(
+                task.getTitle(),
+                task.getPriority(),
+                task.getStatus(),
+                task.getTags(),
+                new Date() // Czas archiwizacji
+        );
+
+        archivedTaskRepository.save(archivedTask);
+
+        taskRepository.deleteById(id);
+
+        return ResponseEntity.ok("Task archived and deleted successfully.");
     }
 }
