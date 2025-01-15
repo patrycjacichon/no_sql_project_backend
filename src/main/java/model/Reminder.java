@@ -1,9 +1,9 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Document(collection = "reminders")
 public class Reminder {
@@ -12,14 +12,15 @@ public class Reminder {
     private String id;
     private String title;
     private String description;
-    private Date date;
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private String date;
     private boolean isCompleted;
     private boolean isSent;
 
     // konstruktor bez arg
     public Reminder() {}
 
-    public Reminder(String title, String description, Date date, boolean isCompleted, boolean isSent) {
+    public Reminder(String title, String description, String date, boolean isCompleted, boolean isSent) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -52,11 +53,11 @@ public class Reminder {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

@@ -19,10 +19,9 @@ public class Task {
     }
 
     // z arg
-    public Task(String title, String priority, String status, List<String> tags) {
+    public Task(String title, String priority, List<String> tags) {
         this.title = title;
         this.priority = priority;
-        this.status = status;
         this.tags = tags;
     }
 
