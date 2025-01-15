@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import repository.ReminderRepository;
-
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @RestController
@@ -25,6 +25,13 @@ public class ReminderController {
         return reminderRepository.findById(id).orElse(null);
     }
 
+    @GetMapping("/pending")
+    public List<Reminder> getPendingReminders() {
+        OffsetDateTime now = OffsetDateTime.now();
+        return reminderRepository.findByIsSentFalseAndDateBefore(now.toString());
+    }
+
+    // powiadomienia
     @PostMapping
     public ResponseEntity<Reminder> addReminder(@RequestBody Reminder reminder) {
         if (reminder.getTitle() == null || reminder.getTitle().isEmpty()) {
@@ -35,7 +42,6 @@ public class ReminderController {
             return ResponseEntity.badRequest().body(null);
         }
 
-        // Zapisz przypomnienie
         Reminder savedReminder = reminderRepository.save(reminder);
         return ResponseEntity.ok(savedReminder);
     }
@@ -44,6 +50,18 @@ public class ReminderController {
     public Reminder updateReminder(@PathVariable String id, @RequestBody Reminder reminder) {
         reminder.setId(id);
         return reminderRepository.save(reminder);
+    }
+
+    // sprawdzanie powiadomien czy wyslane
+    @PutMapping("/{id}/markSent")
+    public ResponseEntity<Reminder> markReminderAsSent(@PathVariable String id) {
+        Reminder reminder = reminderRepository.findById(id).orElse(null);
+        if (reminder == null) {
+            return ResponseEntity.notFound().build();
+        }
+        reminder.setSent(true);
+        reminderRepository.save(reminder);
+        return ResponseEntity.ok(reminder);
     }
 
     @DeleteMapping("/{id}")
