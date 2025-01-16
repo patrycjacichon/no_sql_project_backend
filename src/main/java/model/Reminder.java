@@ -5,6 +5,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.OffsetDateTime;
 
+/**
+ * Klasa reprezentująca przypomnienie. Obiekt tej klasy jest przechowywany w kolekcji "reminders" w bazie MongoDB.
+ * Zawiera informacje o przypomnieniu, takie jak tytuł, opis, data, status ukończenia i status wysłania.
+ */
 @Document(collection = "reminders")
 public class Reminder {
 
@@ -12,14 +16,30 @@ public class Reminder {
     private String id;
     private String title;
     private String description;
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    /**
+     * Data przypomnienia w formacie String. Może być zmieniona na `OffsetDateTime` w przyszłości, aby lepiej obsługiwać daty i strefy czasowe.
+     */
     private String date;
     private boolean isCompleted;
     private boolean isSent;
 
-    // konstruktor bez arg
+    /**
+     * Konstruktor bezargumentowy.
+     * Używany do tworzenia pustego obiektu przypomnienia.
+     */
     public Reminder() {}
 
+    /**
+     * Konstruktor inicjalizujący wszystkie pola klasy.
+     * Używany do tworzenia pełnego obiektu przypomnienia z wszystkimi jego właściwościami.
+     *
+     * @param title tytuł przypomnienia
+     * @param description opis przypomnienia
+     * @param date data przypomnienia w formacie String
+     * @param isCompleted status ukończenia przypomnienia
+     * @param isSent status wysłania przypomnienia
+     */
     public Reminder(String title, String description, String date, boolean isCompleted, boolean isSent) {
         this.title = title;
         this.description = description;
@@ -28,7 +48,9 @@ public class Reminder {
         this.isSent = isSent;
     }
 
-    // Gettery i Settery
+    /**
+     * Gettery i Settery
+     */
     public String getId() {
         return id;
     }

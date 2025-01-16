@@ -4,6 +4,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+/**
+ * Klasa reprezentująca zadanie. Obiekt tej klasy jest przechowywany w kolekcji "tasks" w bazie MongoDB.
+ * Zawiera informacje o zadaniu, takie jak tytuł, priorytet, status oraz tagi.
+ */
 @Document(collection = "tasks")
 public class Task {
 
@@ -14,17 +18,30 @@ public class Task {
     private String status;
     private List<String> tags;
 
-    // domyslny konstruktor bez arg
+    /**
+     * Konstruktor bezargumentowy.
+     * Używany do tworzenia pustego obiektu zadania.
+     */
     public Task() {
     }
 
-    // z arg
+    /**
+     * Konstruktor inicjalizujący tytuł, priorytet oraz tagi zadania.
+     * Używany do tworzenia obiektu zadania z określonymi wartościami.
+     *
+     * @param title tytuł zadania
+     * @param priority priorytet zadania
+     * @param tags lista tagów przypisanych do zadania
+     */
     public Task(String title, String priority, List<String> tags) {
         this.title = title;
         this.priority = priority;
         this.tags = tags;
     }
 
+    /**
+     * Gettery i Settery
+     */
     public String getId() {
         return id;
     }
